@@ -15,30 +15,21 @@ export default function Home() {
             experience, and workflow automation. 8+ years shipping high-impact
             systems end-to-end.
           </p>
-          <div className="mt-6 flex gap-3">
-            <a
-              href="mailto:pankajgupta221b@gmail.com"
-              className="rounded-md border border-black/10 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/[.04] dark:hover:bg-white/[.06]"
-            >
-              Contact
-            </a>
-            <a
-              href="/projects"
-              className="rounded-md border border-black/10 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/[.04] dark:hover:bg-white/[.06]"
-            >
-              View Projects
-            </a>
-          </div>
           <ul className="mt-6 flex flex-wrap gap-2 text-xs text-foreground/70">
             {[
-              "TypeScript",
-              "Next.js",
-              "Node.js",
+              "Ruby on Rails",
               "Python",
-              "Kafka",
+              "Node.js",
+              "Golang",
               "PostgreSQL",
               "AWS",
+              "GCP",
+              "MongoDB",
+              "Leadership",
               "Kubernetes",
+              "CI/CD",
+              "Monitoring",
+              "Observability",
             ].map((s) => (
               <li
                 key={s}
@@ -51,7 +42,7 @@ export default function Home() {
         </div>
         <div className="relative h-36 w-36 sm:h-44 sm:w-44 rounded-full overflow-hidden border border-black/10 dark:border-white/10">
           <Image
-            src="https://avatars.githubusercontent.com/u/000000?v=4"
+            src="/pankaj-gupta.jpg"
             alt="Portrait of Pankaj Gupta"
             fill
             className="object-cover"
