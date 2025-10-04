@@ -6,7 +6,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-background/70 border-b border-black/10 dark:border-white/10">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
         <Link href="/" className="font-semibold tracking-tight">
-          pkfication
+          Pankaj Gupta
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           <Link

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Praveen K | Senior Software Engineer – Fintech Portfolio",
-    template: "%s | Praveen K",
+    default: "Pankaj Gupta | Senior Software Engineer – Fintech Portfolio",
+    template: "%s | Pankaj Gupta",
   },
   description:
     "Senior software engineer (8+ years) in fintech, ecommerce, CX and workflow automation. Available for freelance projects.",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Praveen K | Senior Software Engineer – Fintech Portfolio",
+    title: "Pankaj Gupta | Senior Software Engineer – Fintech Portfolio",
     description:
       "8+ years across fintech, ecommerce, customer experience and workflow automation.",
     type: "website",
@@ -50,7 +50,9 @@ export default function RootLayout({
         </main>
         <footer className="border-t border-black/10 dark:border-white/10 py-8">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-sm text-foreground/70 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>© {new Date().getFullYear()} Praveen K. All rights reserved.</p>
+            <p>
+              © {new Date().getFullYear()} Pankaj Gupta. All rights reserved.
+            </p>
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/pkfication"
@@ -61,7 +63,7 @@ export default function RootLayout({
                 GitHub
               </a>
               <a
-                href="https://www.linkedin.com/in/pkfication"
+                href="https://www.linkedin.com/in/pankajgupta079/"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:underline underline-offset-4"
@@ -69,7 +71,7 @@ export default function RootLayout({
                 LinkedIn
               </a>
               <a
-                href="mailto:hello@pkfication.dev"
+                href="mailto:pankajgupta221b@gmail.com"
                 className="hover:underline underline-offset-4"
               >
                 Email
