@@ -5,7 +5,7 @@ excerpt: How strategy pattern can help you integrate new features into your syst
 tags: [Design Patterns, Strategy Pattern]
 ---
 
-I have been trying to implement design patterns into my arsenal lately. I have seen it being used at multiple places, but I was never able to implement it to solve any problem on my own and I am trying to change that fact now. Today's Design pattern is `Strategy Pattern`
+I have been trying to include design patterns into my arsenal lately. I have seen it being used at multiple places, but I was never able to implement it to solve any problem on my own and I am trying to change that fact now. Today's Design pattern is `Strategy Pattern`
 
 ## Strategy Pattern
 
@@ -23,139 +23,141 @@ Sky is the limit here. Do let me know if you have some special ideas.
 
 ## Example
 
-Instead of trying to do something special, I would try and implement a solution which can sort using different algorithms.
+Instead of trying to do something special, I would implement something a payment systems using different third parties.
 
 According to the pattern, I would be needing a context and a strategy. A context is where I would be storing the strategy to solve the problem. Strategy is just a way to solve the problem.
 
-Going by the defintion, Here is my solution
+This is the strategy interface, that declares the common function.
 
-```ruby
-class SortContext
-  attr_accessor :strategy
+```go
+package main
 
-  # Initialize the items array
-  def initialize(strategy)
-    @strategy = strategy
-  end
+import "fmt"
 
-  # @param [Array] items
-  #
-  # @return [Array]
-  def sort(items)
-    strategy.execute(items)
-  end
-end
+// Strategy defines the interface that all payment methods must implement
+type PaymentStrategy interface {
+	Pay(amount float64)
+}
 ```
 
-This is the context, which will take in a strategy and call it's method. Cool thing is the context has no idea how the method has been implement. We can now replace it with any strategy we want. Let's create an abstract Strategy class.
+Here are the concrete strategies, encapsulating interchangeable behaviours
 
-```ruby
-class Strategy
-  # abstract
-  #
-  # @return [Array]
-  def execute(items)
-    raise NotImplementError, "#{self.class} has not implemented method #{__method__}"
-  end
-end
+```go
+// PayPal strategy
+type PayPal struct{}
+
+func (p *PayPal) Pay(amount float64) {
+	fmt.Printf("Paid ₹%.2f using PayPal\n", amount)
+}
+
+// Stripe strategy
+type Stripe struct{}
+
+func (s *Stripe) Pay(amount float64) {
+	fmt.Printf("Paid ₹%.2f using Stripe\n", amount)
+}
+
+// Razorpay strategy
+type Razorpay struct{}
+
+func (r *Razorpay) Pay(amount float64) {
+	fmt.Printf("Paid ₹%.2f using Razorpay\n", amount)
+}
 ```
 
-This is the method which has to be implemented in the different strategies that we will have. Let's start with the inbuilt sort method strategy.
+Now we need a context struct to hold a strategy which can be changed dynamically on the go.
 
-```ruby
-class InbuiltSortStrategy < Strategy
-  # @param [Array] items
-  #
-  # @return [Array]
-  def execute(items)
-    items.sort
-  end
-end
+```go
+type PaymentContext struct {
+	accountID string
+}
+
+func NewPaymentContext(accountID string) *PaymentContext {
+	return &PaymentContext{accountID: accountID}
+}
+
+// Step 4: Context method that accepts a strategy dynamically
+func (c *PaymentContext) Pay(amount float64, strategy PaymentStrategy) {
+	fmt.Printf("Processing payment for account %s...\n", c.accountID)
+	strategy.Pay(amount)
+}
 ```
 
-I know this feels like cheating. If you look at it now, it feels like it was better off in the same class. Bear with me for a moment lets try and implement this.
+Now all we have to do is to use it in following way:
 
-```ruby
-inbuiltSort = SortContext.new(InbuiltSortStrategy.new)
-inbuiltSort.sort([4,2,5,1])
+```go
+func main() {
+	ctx := NewPaymentContext("ACC123")
 
-# [1,2,4,5]
+	ctx.Pay(1200, &PayPal{})
+	ctx.Pay(850, &Stripe{})
+	ctx.Pay(499, &Razorpay{})
+}
+
+Processing payment for account ACC123...
+Paid ₹1200.00 using PayPal
+Processing payment for account ACC123...
+Paid ₹850.00 using Stripe
+Processing payment for account ACC123...
+Paid ₹499.00 using Razorpay
 ```
 
-As you can see, The code is working as expected. Now let's introduce a new sorting strategy which reverse sorts the array of items.
+If we don't like the types as much we can do something like this:
 
-```ruby
-class ReverseSortStrategy < Strategy
-  # @param [Array] items
-  #
-  # @return [Array]
-  def execute(items)
-    items.sort { |x,y| -(x <=> y) }
-  end
-end
+```go
+type PaymentStrategy func(amount float64)
+
+type PaymentContext struct {
+	accountID string
+}
+
+func (c *PaymentContext) Pay(amount float64, strategy PaymentStrategy) {
+	fmt.Printf("Processing payment for %s...\n", c.accountID)
+	strategy(amount)
+}
+
+func main() {
+	ctx := &PaymentContext{"ACC123"}
+
+	paypal := func(a float64) { fmt.Printf("Paid ₹%.2f using PayPal\n", a) }
+	stripe := func(a float64) { fmt.Printf("Paid ₹%.2f using Stripe\n", a) }
+
+	ctx.Pay(1000, paypal)
+	ctx.Pay(500, stripe)
+}
+
 ```
 
-Notice how we didn't even have to touch our old code in order to introduce a new change ? This is how our classes should be implemented. Now inorder to sort the items in reverse, just create a new context with this strategy.
+---
 
-```ruby
-reverseSort = SortContext.new(ReverseSortStrategy.new)
-reverseSort.sort([4,2,5,1])
+## Without Strategy Pattern
 
-# [5, 4, 2, 1]
+It might not make sense here so let me give you an example, how things would look like if we were not using the design patterns:
+
+```go
+package main
+
+import "fmt"
+
+func ProcessPayment(method string, amount float64) {
+	if method == "paypal" {
+		fmt.Printf("Paid ₹%.2f using PayPal\n", amount)
+	} else if method == "stripe" {
+		fmt.Printf("Paid ₹%.2f using Stripe\n", amount)
+	} else if method == "razorpay" {
+		fmt.Printf("Paid ₹%.2f using Razorpay\n", amount)
+	} else {
+		fmt.Println("Unknown payment method:", method)
+	}
+}
+
+func main() {
+	ProcessPayment("paypal", 1000)
+	ProcessPayment("stripe", 2000)
+	ProcessPayment("razorpay", 500)
+}
 ```
 
-To make things interesting, let's implement a merge sort strategy:
+Now imagine having to make changes to ProcessPayment. A simple mistake there could mean we stop processing payments altogether. On top of that, writing test cases would be a nightmare — especially if we have to modify upstream code just to include something written elsewhere. If the code base crosses 50K lines, it starts to hamper the develop experience.
 
-```ruby
-class MergeSortStrategy < Strategy
-  # @param [Array] items
-  #
-  # @return [Array]
-  def execute(items)
-    mergeSort(items)
-  end
-
-  def mergeSort(items)
-    # if array only has one element or fewer there is nothing to do
-    if items.length <=1
-      items
-    else
-      # dividing and then merge-sorting the halves
-      mid = items.length/2
-      first_half = merge_sort(items.slice(0...mid))
-      second_half = merge_sort(items.slice(mid...items.length))
-      merge(first_half, second_half)
-    end
-  end
-
-  def merge(left_array, right_array)
-    sorted_array = []
-    # If either array is empty we don't need to compare them
-    while !left_array.empty? && !right_array.empty? do
-      # we are shifting out the compared/used values so we don't repeat
-      if left_array[0] < right_array[0]
-        sorted_array.push(left_array.shift)
-      else
-        sorted_array.push(right_array.shift)
-      end
-    end
-    #concat appends elements of another array to an array
-    return sorted_array.concat(left_array).concat(right_array)
-  end
-end
-```
-
-Now creating a new context with this strategy:
-
-```ruby
-mergeSort = SortContext.new(MergeSortStrategy.new)
-mergeSort.sort([4,2,5,1])
-
-# [1, 2, 4, 5]
-```
-
-Voilà! New changes added without disturbing the existing code. Our context has no idea what magic goes on in the sort method, there is no coupling in the context and strategy here. This is the most interesting thing about this strategy.
-
-Now this was just a small example, which might have made any difference as the changes where very small and you could easily distinguished the parts of the code. But imagine a huge system, where you've thousands of lines of code and multiple people are working on it. Every person responsible for a strategy could work without worrying about conflicts and breaking other people changes while integration.
-
-I will be working on something concrete to demonstrate this in a better way.
+Be nice and think about others.
