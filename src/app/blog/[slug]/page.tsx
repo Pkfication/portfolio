@@ -31,7 +31,6 @@ export default async function BlogPostPage({ params }: Params) {
       <div className="text-xs text-foreground/70 mt-1">
         {new Date(post.frontmatter.date).toLocaleDateString()}
       </div>
-      {/* eslint-disable-next-line react/no-danger */}
       <div className="mt-6" dangerouslySetInnerHTML={{ __html: post.html }} />
     </article>
   );

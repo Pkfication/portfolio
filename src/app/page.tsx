@@ -80,12 +80,12 @@ export default async function Home() {
           <h2 className="text-xl font-semibold tracking-tight">
             Latest Articles
           </h2>
-          <a
+          <Link
             href="/blog"
             className="text-sm hover:underline underline-offset-4"
           >
             View all
-          </a>
+          </Link>
         </div>
         {latest.length === 0 ? (
           <p className="mt-3 text-foreground/70">No posts yet.</p>
