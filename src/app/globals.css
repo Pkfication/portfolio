@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "highlight.js/styles/github-dark-dimmed.css";
 
 :root {
   --background: #ffffff;
@@ -29,4 +30,52 @@ body {
 
 a {
   color: inherit;
+}
+
+/* Basic markdown/article styles */
+.markdown {
+  line-height: 1.7;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.markdown h1 {
+  font-size: 1.875rem;
+}
+.markdown h2 {
+  font-size: 1.5rem;
+  margin-top: 1.25rem;
+}
+.markdown h3 {
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}
+.markdown p {
+  margin-top: 0.75rem;
+}
+.markdown ul,
+.markdown ol {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+}
+.markdown code {
+  background: rgba(127, 127, 127, 0.12);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+.markdown pre {
+  background: #0b0b0b;
+  color: #eaeaea;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.markdown pre code {
+  background: transparent;
+  padding: 0;
 }

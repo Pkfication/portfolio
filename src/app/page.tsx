@@ -1,8 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
+import { listBlogPosts } from "@/lib/mdx";
 
-export default function Home() {
+export default async function Home() {
+  const posts = await listBlogPosts();
+  const latest = posts.slice(0, 2);
   return (
     <div className="space-y-12">
       <section className="flex flex-col-reverse md:flex-row items-center gap-8">
@@ -69,6 +73,49 @@ export default function Home() {
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
+      </section>
+
+      <section>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Latest Articles
+          </h2>
+          <a
+            href="/blog"
+            className="text-sm hover:underline underline-offset-4"
+          >
+            View all
+          </a>
+        </div>
+        {latest.length === 0 ? (
+          <p className="mt-3 text-foreground/70">No posts yet.</p>
+        ) : (
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {latest.map((post) => (
+              <article
+                key={post.slug}
+                className="rounded-lg border border-black/10 dark:border-white/10 p-4 hover:border-black/20 dark:hover:border-white/20 transition-colors"
+              >
+                <h3 className="font-semibold tracking-tight">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="hover:underline underline-offset-4"
+                  >
+                    {post.frontmatter.title}
+                  </Link>
+                </h3>
+                <div className="text-xs text-foreground/70 mt-1">
+                  {new Date(post.frontmatter.date).toLocaleDateString()}
+                </div>
+                {post.frontmatter.excerpt ? (
+                  <p className="mt-2 text-sm text-foreground/80">
+                    {post.frontmatter.excerpt}
+                  </p>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
