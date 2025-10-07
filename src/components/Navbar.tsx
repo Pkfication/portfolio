@@ -30,12 +30,6 @@ export default function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <a
-            href="/PK_CV.pdf"
-            className="rounded-md border border-black/10 dark:border-white/20 px-3 py-2 text-sm font-medium hover:bg-black/[.04] dark:hover:bg-white/[.06] transition-colors"
-          >
-            Download CV
-          </a>
         </div>
       </div>
     </header>
