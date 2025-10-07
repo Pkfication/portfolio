@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.17.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.11.1",
     "next": "15.5.4",
